@@ -5,7 +5,7 @@
 set -xeuo pipefail
 
 VERSION_ID="$(sh -c '. /usr/lib/os-release ; echo $VERSION_ID')"
-IMAGE_PRETTY_NAME="Atomic Kitten"
+IMAGE_PRETTY_NAME="Atomic Stream"
 
 # Add our image name as VARIANT_ID.
 # This may help us get some usage stats through countme data.
