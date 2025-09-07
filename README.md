@@ -1,4 +1,4 @@
-# Atomic Kitten Workstation
+# Atomic Stream Workstation
 
 An opinionated atomic workstation based on the CentOS Stream `bootc` image.
 
