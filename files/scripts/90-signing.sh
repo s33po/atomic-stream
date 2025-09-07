@@ -36,7 +36,9 @@ jq --arg image_registry "${IMAGE_REGISTRY}" \
                 "type": "matchRepository"
             }
         }
-    ] }
+      ],
+      "": [{ "type": "insecureAcceptAnything"}]
+    }
     + .
     | .transports *= (["docker-daemon", "containers-storage", "dir", "oci", "oci-archive", "docker-archive", "tarball"]
         | map({(.): {"": [{"type": "insecureAcceptAnything"}]}})

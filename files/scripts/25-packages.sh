@@ -5,6 +5,7 @@ set -xeuo pipefail
 # Remove firefox
 dnf autoremove -y \
     firefox \
+    PackageKit
 
 # Install stuff
 dnf -y install \
@@ -18,8 +19,9 @@ dnf -y install \
    zsh \
    fzf \
    tmux \
+   fpaste \
    python3-ramalama \
-   jetbrains-mono-fonts-all \
+   jetbrains-mono-fonts \
    google-noto-sans-fonts \
    powerline-fonts \
 
@@ -31,7 +33,8 @@ dnf -y --enablerepo packages.microsoft.com_yumrepos_vscode --nogpgcheck  install
 # Disable lastlog display on previous failed login in GDM (This makes logins slow)
 authselect enable-feature with-silent-lastlog
 
-# Enable podman-socket
+# Enable services
 systemctl enable podman.socket
-
+systemctl enable bootc-fetch-apply-updates.service
+systemctl enable firewalld
 

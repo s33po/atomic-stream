@@ -2,7 +2,11 @@
 
 set -xeuo pipefail
 
-dnf install -y \
+# TESTING: GNOME 48 backport from COPR
+dnf -y copr enable @centoshyperscale/c10s-gnome-48
+dnf -y install glib2
+
+dnf -y install \
     @"Workstation" \
     @"Virtualization Host" 
     
@@ -11,3 +15,4 @@ systemctl set-default graphical.target
 
 dnf -y remove \
     setroubleshoot
+    
