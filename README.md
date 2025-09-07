@@ -9,9 +9,9 @@ Built using the [AlmaLinux atomic-respin-template](https://github.com/AlmaLinux/
 - Switched to a forked atomic-ci build pipeline
 - Changed the base image from the original `atomic-desktop` to the `CentOS Stream` bootc image
 - Retained most configuration from the original `atomic-desktop` base image
-- Added multimedia codecs from EPEL
+- Added multimedia codecs from Negativo
+- Added backported GNOME 48 from hyperscale sig copr
 - Removed Firefox in favor of Flatpak version 
 - Added virtualization support, VS Code, and some tools, utilities, and fonts
-- Experimental `g48` branch with backported GNOME 48
 
 **Intended for personal use and testing only.**
