@@ -18,7 +18,7 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 
 dnf --refresh \
   --disablerepo=baseos,appstream \
-  --enablerepo="centos-kmods" -y upgrade kernel
+  --enablerepo="centos-kmods" -y --allowerasing upgrade kernel 
 
 KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | sort -V | tail -n1)
 echo "New kernel version: $KVER"
