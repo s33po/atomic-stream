@@ -4,10 +4,13 @@ set -xeuo pipefail
 
 dnf remove -y subscription-manager
 
-# EXPERIMENTAL: install hyperscale kernel (From TunaOS)
-dnf -y install centos-release-hyperscale-kernel
-dnf config-manager --set-disabled "centos-hyperscale,centos-hyperscale-kernel"
-dnf --enablerepo="centos-hyperscale" --enablerepo="centos-hyperscale-kernel" -y update kernel
+### EXPERIMENTAL: newer kernel from Kmods SIG ###
+
+dnf -y install centos-release-kmods
+dnf config-manager --set-disabled "centos-kmods"
+dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
+## I don’t plan to use the mainline kernel long-term, so I’ll freeze the kernel at the next LTS release (most likely 6.18)
+#dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel-6.18
 
 dnf -y install 'dnf-command(versionlock)'
 dnf versionlock add kernel kernel-devel kernel-devel-matched kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-uki-virt
