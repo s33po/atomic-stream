@@ -17,11 +17,13 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 #dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel-6.18
 
 # Remove older kernel and modules before installing new ones
-dnf -y remove kernel kernel-core kernel-modules kernel-modules-extra kernel-devel || true
+dnf -y remove kernel\* || true
 
 # Install new kernel and modules from kmods
-dnf --disablerepo=baseos,appstream --enablerepo="centos-kmods" -y install \
-    kernel kernel-core kernel-modules kernel-modules-extra
+dnf --disablerepo=baseos,appstream --enablerepo="centos-kmods" -y install kernel\*
+
+# kernel kernel-core kernel-modules kernel-modules-extra kernel-modules-core kernel-headers 
+#kernel-tools kernel-tools-libs kernel-modules-extra-matched
 
 # Get the newly installed kernel version and run run depmod
 KERNEL_VERSION=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | head -n1)
