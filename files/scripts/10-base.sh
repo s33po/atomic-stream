@@ -16,31 +16,21 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 ## I don’t plan to use the mainline kernel long-term, so I’ll freeze the kernel at the next LTS release (most likely 6.18)
 #dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel-6.18
 
-# Remove older kernel and modules before installing new ones
-dnf -y remove kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-modules-extra-matched || true
+REPO_OVERRIDE="--disablerepo=baseos,appstream --enablerepo=centos-kmods"
 
-# Install new kernel and modules from kmods
-dnf --disablerepo=baseos,appstream --enablerepo="centos-kmods" -y install kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-modules-extra-matched kernel-headers
+dnf $REPO_OVERRIDE -y install kernel kernel-core kernel-modules kernel-modules-extra kernel-headers || true
 
-# Get the newly installed kernel version and run run depmod
-KERNEL_VERSION=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | head -n1)
-depmod "$KERNEL_VERSION"
+KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | sort -V | tail -n1)
+echo "New kernel version: $KVER"
 
-# Show installed kernel packages
-echo "=== Installed Kernel Packages (dnf list installed kernel*) ==="
-dnf list installed 'kernel*' || echo "Failed to list installed kernel packages"
+depmod "$KVER"
 
-# Show installed kernel versions
-echo "=== Installed Kernel Versions (rpm -q kernel) ==="
-rpm -q kernel
+rpm -q kernel | grep -v "$KVER" | xargs -r dnf -y remove || true
 
-# Install versionlock and clear old locks before adding new ones
 dnf -y install 'dnf-command(versionlock)'
 dnf versionlock clear
-
-# Lock only currently installed kernel packages
-rpm -qa 'kernel*' | sort | while read -r pkg; do
-    echo "Locking: $pkg"
+rpm -qa 'kernel*' | grep "$KVER" | while read -r pkg; do
+    echo "Locking $pkg"
     dnf versionlock add "$pkg"
 done
 
