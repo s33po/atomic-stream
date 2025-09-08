@@ -20,7 +20,8 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 dnf -y remove kernel kernel-core kernel-modules kernel-modules-extra kernel-devel || true
 
 # Install new kernel from kmods
-dnf --enablerepo="centos-kmods" -y install kernel kernel-core kernel-modules kernel-devel kernel-modules-extra
+dnf --disablerepo=baseos,appstream --enablerepo="centos-kmods" -y install \
+    kernel kernel-core kernel-modules kernel-modules-extra kernel-devel
 
 echo
 echo "===Installed Kernel Packages (dnf list installed kernel*) ==="
