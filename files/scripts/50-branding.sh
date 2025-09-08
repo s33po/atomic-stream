@@ -50,5 +50,8 @@ dconf update
 dnf install -y \
     plymouth-theme-spinner
 
-kver=$(cd /usr/lib/modules && echo * | awk '{print $1}')
+# Get latest installed kernel version
+kver=$(ls -1 /usr/lib/modules | sort -V | tail -n1)
+
+# Build initramfs for the latest kernel
 dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
