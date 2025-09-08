@@ -16,9 +16,9 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 ## I don’t plan to use the mainline kernel long-term, so I’ll freeze the kernel at the next LTS release (most likely 6.18)
 #dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel-6.18
 
-REPO_OVERRIDE="--disablerepo=baseos,appstream --enablerepo=centos-kmods"
-
-dnf $REPO_OVERRIDE -y install kernel kernel-core kernel-modules kernel-modules-extra kernel-headers || true
+dnf --refresh \
+  --disablerepo=baseos,appstream \
+  --enablerepo="centos-kmods" -y upgrade kernel
 
 KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | sort -V | tail -n1)
 echo "New kernel version: $KVER"
