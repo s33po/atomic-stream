@@ -24,6 +24,16 @@ KVER=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | sort -V | tail -n1
 echo "New kernel version: $KVER"
 
 depmod "$KVER"
+dracut --no-hostonly --force --kver "$KVER"
+
+# Verify result
+INITRAMFS="/boot/initramfs-${KVER}.img"
+if [[ -f "$INITRAMFS" ]]; then
+    echo "Initramfs generated: $INITRAMFS"
+else
+    echo "Failed to generate initramfs!"
+    exit 1
+fi
 
 rpm -q kernel | grep -v "$KVER" | xargs -r dnf -y remove || true
 
