@@ -3,7 +3,7 @@
 set -xeuo pipefail
 
 # Remove firefox
-dnf autoremove -y \
+dnf -y autoremove \
     firefox \
     PackageKit
 
@@ -20,21 +20,35 @@ dnf -y install \
    fzf \
    tmux \
    fpaste \
+   uv \
    python3-ramalama \
    jetbrains-mono-fonts \
    google-noto-sans-fonts \
    powerline-fonts \
+
+# Cockpit modules
+dnf -y install \
+   cockpit-machines \
+   cockpit-podman \
+   cockpit-networkmanager \
+   cockpit-selinux \
+   cockpit-sosreport
+
+
+### External repos ###
 
 # VSCode
 dnf config-manager --add-repo "https://packages.microsoft.com/yumrepos/vscode"
 dnf config-manager --set-disabled packages.microsoft.com_yumrepos_vscode
 dnf -y --enablerepo packages.microsoft.com_yumrepos_vscode --nogpgcheck  install code
 
-# Disable lastlog display on previous failed login in GDM (This makes logins slow)
-authselect enable-feature with-silent-lastlog
-
-# Enable services
-systemctl enable podman.socket
-systemctl enable bootc-fetch-apply-updates.service
-systemctl enable firewalld
-
+# Docker setup (From TunaOS)
+echo "Adding Docker repo and installing Docker components..."
+dnf config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo" || echo "Docker repo already added or failed to add."
+dnf config-manager --set-disabled docker-ce-stable || true # Disable if it's already enabled
+dnf -y --enablerepo docker-ce-stable install \
+	docker-ce \
+	docker-ce-cli \
+	containerd.io \
+	docker-buildx-plugin \
+	docker-compose-plugin
