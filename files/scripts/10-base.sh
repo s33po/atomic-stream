@@ -5,7 +5,6 @@ set -xeuo pipefail
 dnf remove -y subscription-manager
 
 dnf -y install 'dnf-command(config-manager)' epel-release
-dnf -y upgrade epel-release
 dnf config-manager --set-enabled crb
 
 ### EXPERIMENTAL: newer kernel from Kmods SIG ###
@@ -17,6 +16,10 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 ## I don’t plan to use the mainline kernel long-term, so I’ll freeze the kernel at the next LTS release (most likely 6.18)
 #dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel-6.18
 
+# Remove older kernel and modules before installing new ones
+dnf -y remove kernel kernel-core kernel-modules kernel-modules-extra kernel-devel || true
+
+# Install new kernel from kmods
 dnf --enablerepo="centos-kmods" -y install kernel kernel-core kernel-modules kernel-devel kernel-modules-extra
 
 echo
