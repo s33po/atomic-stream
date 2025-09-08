@@ -12,3 +12,6 @@ systemctl enable podman.socket
 systemctl enable cockpit.socket
 systemctl enable docker.socket
 systemctl enable libvirtd.service
+
+# Disable lastlog display 
+authselect enable-feature with-silent-lastlog
