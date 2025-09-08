@@ -13,6 +13,4 @@ dnf -y install \
 systemctl enable gdm
 systemctl set-default graphical.target
 
-dnf -y remove \
-    setroubleshoot
-    
+dnf -y remove setroubleshoot console-login-helper-messages
