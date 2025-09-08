@@ -13,10 +13,19 @@ dnf config-manager --set-enabled crb
 dnf -y install centos-release-kmods
 dnf config-manager --set-disabled "centos-kmods"
 dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
-dnf --enablerepo="centos-kmods" -y update kernel
 
 ## I don’t plan to use the mainline kernel long-term, so I’ll freeze the kernel at the next LTS release (most likely 6.18)
 #dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel-6.18
+
+dnf --enablerepo="centos-kmods" -y install kernel kernel-core kernel-modules kernel-devel kernel-modules-extra
+
+echo
+echo "===Installed Kernel Packages (dnf list installed kernel*) ==="
+dnf list installed kernel\* || echo "Failed to list installed kernel packages"
+
+echo
+echo "===Installed Kernel Versions (rpm -q kernel) ==="
+rpm -q kernel || echo "Failed to query installed kernel versions"
 
 dnf -y install 'dnf-command(versionlock)'
 dnf versionlock add kernel kernel-devel kernel-devel-matched kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-uki-virt
