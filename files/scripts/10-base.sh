@@ -19,19 +19,31 @@ dnf --enablerepo="centos-kmods" -y install centos-release-kmods-kernel
 # Remove older kernel and modules before installing new ones
 dnf -y remove kernel kernel-core kernel-modules kernel-modules-extra kernel-devel || true
 
-# Install new kernel from kmods
+# Install new kernel and modules from kmods
 dnf --disablerepo=baseos,appstream --enablerepo="centos-kmods" -y install \
     kernel kernel-core kernel-modules kernel-modules-extra
 
-echo
-echo "===Installed Kernel Packages (dnf list installed kernel*) ==="
-dnf list installed kernel\* || echo "Failed to list installed kernel packages"
+# Get the newly installed kernel version and run run depmod
+KERNEL_VERSION=$(rpm -q --qf '%{VERSION}-%{RELEASE}.%{ARCH}\n' kernel | head -n1)
+depmod "$KERNEL_VERSION"
 
-echo
-echo "===Installed Kernel Versions (rpm -q kernel) ==="
-rpm -q kernel || echo "Failed to query installed kernel versions"
+# Show installed kernel packages
+echo "=== Installed Kernel Packages (dnf list installed kernel*) ==="
+dnf list installed 'kernel*' || echo "Failed to list installed kernel packages"
 
+# Show installed kernel versions
+echo "=== Installed Kernel Versions (rpm -q kernel) ==="
+rpm -q kernel
+
+# Install versionlock and clear old locks before adding new ones
 dnf -y install 'dnf-command(versionlock)'
-dnf versionlock add kernel kernel-devel kernel-devel-matched kernel-core kernel-modules kernel-modules-core kernel-modules-extra kernel-uki-virt
+dnf versionlock clear
 
+# Lock only currently installed kernel packages
+rpm -qa 'kernel*' | sort | while read -r pkg; do
+    echo "Locking: $pkg"
+    dnf versionlock add "$pkg"
+done
+
+# Install other stuff
 dnf -y install system-reinstall-bootc powertop fuse steam-devices
