@@ -2,7 +2,7 @@
 
 set -xeuo pipefail
 
-# Remove firefox
+# Remove firefox and packagekit
 dnf -y autoremove \
     firefox \
     PackageKit
@@ -21,7 +21,7 @@ dnf -y install \
    tmux \
    fpaste \
    uv \
-   python3-ramalama \
+   ramalama \
    jetbrains-mono-fonts \
    google-noto-sans-fonts \
    powerline-fonts \

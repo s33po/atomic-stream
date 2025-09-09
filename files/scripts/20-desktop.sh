@@ -6,9 +6,9 @@ set -xeuo pipefail
 dnf -y copr enable @centoshyperscale/c10s-gnome-48
 dnf -y install glib2
 
-dnf -y install --best \
-    @"Workstation" \
-    @"Virtualization Host" 
+dnf group install -y \
+    "Workstation" \
+    "Virtualization Host" 
     
 systemctl enable gdm
 systemctl set-default graphical.target

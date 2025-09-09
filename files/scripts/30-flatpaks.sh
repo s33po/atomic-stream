@@ -2,7 +2,7 @@
 
 set -xeuo pipefail
 
-tee -a /etc/flatpak/defpaks.list <<EOF
+tee /etc/flatpak/defpaks.list <<EOF
 org.mozilla.firefox
 org.gnome.Calendar
 org.gnome.NautilusPreviewer

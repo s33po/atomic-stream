@@ -6,13 +6,14 @@ dnf remove -y subscription-manager
 
 dnf -y install 'dnf-command(config-manager)' epel-release
 dnf config-manager --set-enabled crb
+dnf -y upgrade epel-release
 
 dnf -y install 'dnf-command(versionlock)'
 dnf versionlock clear
 
 ### EXPERIMENTAL: newer kernel from Kmods SIG. Script below is FROM Bluefin-LTS: https://github.com/ublue-os/bluefin-lts ###
-## I don’t plan to use the pinned mainline kernel long-term and I’ll switch to the next LTS kernel (most likely 6.18) when it is available from kmods
-#dnf -y install centos-release-kmods-kernel-6.18
+## I don’t plan to use the pinned mainline kernel long-term and will switch to the next LTS kernel (most likely 6.18) when it becomes available from kmods.
+## dnf -y install centos-release-kmods-kernel-6.18
 
 dnf -y install centos-release-kmods-kernel
 
@@ -41,7 +42,10 @@ INSTALL_PKGS=(
     "kernel-${KERNEL_VERSION_ONLY}"
     "kernel-core-${KERNEL_VERSION_ONLY}"
     "kernel-modules-${KERNEL_VERSION_ONLY}"
+    "kernel-tools-${KERNEL_VERSION_ONLY}"
+    "kernel-tools-libs-${KERNEL_VERSION_ONLY}"
 )
+
 dnf install --allowerasing -y "${INSTALL_PKGS[@]/%/.${ARCH}}" || { echo "Error: Failed to install kernel packages."; exit 1; }
 echo "Installing kernel packages: ${INSTALL_PKGS[@]/%/.${ARCH}}"
 
@@ -52,11 +56,11 @@ for pkg in "${INSTALL_PKGS[@]}"; do
 done
 
 #Run depmod
-depmod -a "${TARGET_KERNEL_FULL_VERSION}.${ARCH}"
+depmod -a "${KERNEL_VERSION_ONLY}.${ARCH}"
 
 echo "Kernel ${KERNEL_VERSION_ONLY} installed, set as default, and locked."
 
-#dnf config-manager --set-disabled "centos-kmods-kernel"
+dnf config-manager --set-disabled "centos-kmods-kernel"
 
 ### KERNEL SWAP ENDS ###
 

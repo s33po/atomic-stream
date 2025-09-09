@@ -21,6 +21,9 @@ monospace-font-name='JetBrains Mono Regular 12'
 icon-theme='Adwaita'
 cursor-theme='Adwaita'
 accent-color='teal'
+clock-format='24h'
+clock-show-weekday=true
+
 
 [org/gnome/desktop/wm/preferences]
 button-layout='appmenu:minimize,maximize,close'
@@ -39,6 +42,13 @@ custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybin
 name='Launch Ptyxis'
 command='ptyxis --new-window'
 binding='<Super>Return'
+
+[org/gnome/nautilus/preferences]
+sort-directories-first=true
+default-folder-viewer='list-view'
+
+[org/gnome/desktop/calendar]
+show-weekdate=true
 EOF
 
 # Apply settings
