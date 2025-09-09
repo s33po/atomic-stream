@@ -2,7 +2,6 @@
 
 set -xeuo pipefail
 
-systemctl enable dconf-update.service
 systemctl enable bootc-fetch-apply-updates.service
 systemctl enable bootc-fetch-apply-updates.timer
 systemctl enable firewalld
