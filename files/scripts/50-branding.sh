@@ -2,9 +2,6 @@
 
 set -xeuo pipefail
 
-# Install required tools and fonts
-dnf -y install dconf fontconfig
-
 # Set up dconf system profile
 mkdir -p /etc/dconf/profile
 cat <<EOF > /etc/dconf/profile/user
@@ -47,11 +44,12 @@ EOF
 # Apply settings
 dconf update
 
-dnf install -y \
-    plymouth-theme-spinner
+# Search for the latest installed kernel version:
+KERNEL_SUFFIX=""
+QUALIFIED_KERNEL=$(rpm -qa | \
+  grep -P 'kernel-(|'"$KERNEL_SUFFIX"'-)(\d+\.\d+\.\d+)' | \
+  sed -E 's/kernel-(|'"$KERNEL_SUFFIX"'-)//' | \
+  sort -V | tail -n 1)
 
-# Get latest installed kernel version
-kver=$(ls -1 /usr/lib/modules | sort -V | tail -n1)
-
-# Build initramfs for the latest kernel
-dracut -vf /usr/lib/modules/$kver/initramfs.img $kver
+# Generate initramfs for the newest kernel:
+usr/bin/dracut --no-hostonly --kver "$QUALIFIED_KERNEL" --reproducible --zstd -v --add ostree -f "/lib/modules/$QUALIFIED_KERNEL/initramfs.img"

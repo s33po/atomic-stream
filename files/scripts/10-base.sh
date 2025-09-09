@@ -51,6 +51,9 @@ for pkg in "${INSTALL_PKGS[@]}"; do
     dnf versionlock add "${pkg}.${ARCH}" || { echo "Error: Failed to lock ${pkg}.${ARCH}."; exit 1; }
 done
 
+#Run depmod
+depmod -a "${TARGET_KERNEL_FULL_VERSION}.${ARCH}"
+
 echo "Kernel ${KERNEL_VERSION_ONLY} installed, set as default, and locked."
 
 #dnf config-manager --set-disabled "centos-kmods-kernel"
