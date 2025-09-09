@@ -11,7 +11,7 @@ dnf -y install 'dnf-command(versionlock)'
 dnf versionlock clear
 
 ### EXPERIMENTAL: newer kernel from Kmods SIG. Script below is FROM Bluefin-LTS: https://github.com/ublue-os/bluefin-lts ###
-## I don’t plan to use the mainline kernel long-term, so I’ll switch to the next LTS kernel (most likely 6.18) when it is available.
+## I don’t plan to use the pinned mainline kernel long-term and I’ll switch to the next LTS kernel (most likely 6.18) when it is available from kmods
 #dnf -y install centos-release-kmods-kernel-6.18
 
 dnf -y install centos-release-kmods-kernel
@@ -53,7 +53,7 @@ done
 
 echo "Kernel ${KERNEL_VERSION_ONLY} installed, set as default, and locked."
 
-dnf config-manager --set-disabled "centos-kmods-kernel"
+#dnf config-manager --set-disabled "centos-kmods-kernel"
 
 ### KERNEL SWAP ENDS ###
 
