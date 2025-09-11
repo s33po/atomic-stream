@@ -7,7 +7,7 @@ COPY files/scripts /build_files/
 COPY *.pub /keys/
 
 # Base Image
-FROM quay.io/centos-bootc/centos-bootc:c10s@sha256:338ee1dbc5f8bb889d7ad2fba1e4e68254c558aa53ecc76dfe1f7e59074aa078
+FROM quay.io/centos-bootc/centos-bootc:c10s@sha256:f826c10afa0763b17544c01f82675969dde0a5d1ab75e050c0b94163b5760f08
 
 ARG IMAGE_NAME
 ARG IMAGE_REGISTRY
