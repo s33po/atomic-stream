@@ -2,11 +2,11 @@
 
 set -xeuo pipefail
 
-# TESTING: GNOME 48 backport from COPR
-dnf -y copr enable @centoshyperscale/c10s-gnome-48
+# TESTING: GNOME 48 backport from Bluefin LTS / TunaOS
+dnf -y copr enable jreilly1821/c10s-gnome
 dnf -y install glib2
 
-dnf group install -y \
+dnf group install --nobest -y \
     "Workstation" \
     "Virtualization Host" 
     
