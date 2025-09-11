@@ -18,7 +18,7 @@ dnf versionlock clear
 dnf -y install centos-release-kmods-kernel
 
 ARCH=$(uname -m)
-TARGET_MAJOR_MINOR="6.15"
+TARGET_MAJOR_MINOR="6.16"
 echo "--- Pinning Kernel to ${TARGET_MAJOR_MINOR}.x ---"
 
 rpm -q python3-dnf-plugin-versionlock &> /dev/null || \
