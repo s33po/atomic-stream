@@ -5,7 +5,7 @@ set -xeuo pipefail
 dnf remove -y subscription-manager
 
 dnf config-manager --set-enabled crb
-dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
+dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
 
 dnf -y install 'dnf-command(versionlock)'
 dnf versionlock clear
