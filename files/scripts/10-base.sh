@@ -63,6 +63,10 @@ dnf config-manager --set-disabled "centos-kmods-kernel"
 
 ### KERNEL SWAP ENDS ###
 
+# TESTING: GNOME 48 backport from Bluefin LTS / TunaOS
+dnf -y copr enable jreilly1821/c10s-gnome
+dnf -y install glib2
+
 # Multimedia codecs
 dnf config-manager --add-repo=https://negativo17.org/repos/epel-multimedia.repo
 dnf config-manager --set-disabled epel-multimedia
