@@ -4,9 +4,8 @@ set -xeuo pipefail
 
 dnf remove -y subscription-manager
 
-dnf -y install 'dnf-command(config-manager)' epel-release
 dnf config-manager --set-enabled crb
-dnf -y upgrade epel-release
+dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm
 
 dnf -y install 'dnf-command(versionlock)'
 dnf versionlock clear
@@ -63,6 +62,12 @@ echo "Kernel ${KERNEL_VERSION_ONLY} installed, set as default, and locked."
 dnf config-manager --set-disabled "centos-kmods-kernel"
 
 ### KERNEL SWAP ENDS ###
+
+# Multimedia codecs
+dnf config-manager --add-repo=https://negativo17.org/repos/epel-multimedia.repo
+dnf config-manager --set-disabled epel-multimedia
+dnf -y install --enablerepo=epel-multimedia \
+	ffmpeg libavcodec @multimedia gstreamer1-plugins-{bad-free,bad-free-libs,good,base} lame{,-libs} libjxl ffmpegthumbnailer libheif libwebp
 
 # Install other stuff
 dnf -y install system-reinstall-bootc powertop fuse steam-devices
