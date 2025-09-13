@@ -25,6 +25,8 @@ dnf -y install \
    jetbrains-mono-fonts \
    google-noto-sans-fonts \
    powerline-fonts \
+   systemd-{resolved,container,oomd} \
+   libcamera{,-{v4l2,gstreamer,tools}}
 
 # Cockpit modules
 dnf -y install \
@@ -32,8 +34,6 @@ dnf -y install \
    cockpit-podman \
    cockpit-networkmanager \
    cockpit-selinux \
-   cockpit-sosreport
-
 
 ### External repos ###
 
@@ -41,14 +41,3 @@ dnf -y install \
 dnf config-manager --add-repo "https://packages.microsoft.com/yumrepos/vscode"
 dnf config-manager --set-disabled packages.microsoft.com_yumrepos_vscode
 dnf -y --enablerepo packages.microsoft.com_yumrepos_vscode --nogpgcheck  install code
-
-# Docker setup (From TunaOS)
-echo "Adding Docker repo and installing Docker components..."
-dnf config-manager --add-repo "https://download.docker.com/linux/centos/docker-ce.repo" || echo "Docker repo already added or failed to add."
-dnf config-manager --set-disabled docker-ce-stable || true # Disable if it's already enabled
-dnf -y --enablerepo docker-ce-stable install \
-	docker-ce \
-	docker-ce-cli \
-	containerd.io \
-	docker-buildx-plugin \
-	docker-compose-plugin
